@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Porcentagem de Tempo Passado</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    .progress-bar {
+      width: 60%;
+      margin: 20px auto;
+      height: 30px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress {
+      width: 0%;
+      height: 100%;
+      background-color: #3498db;
+    }
+  </style>
+</head>
+<body>
+  <h1>Porcentagem de Tempo Passado</h1>
+  <p id="percentage"></p>
+  <p id="days"></p>
+  <p id="remainingDays"></p>
+  
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <script>
+    // Definindo as datas
+    var dataInicial = new Date('2023-12-21');
+    var dataFinal = new Date('2024-03-02'); // Alterada para 2 de março de 2024
+    var dataAtual = new Date();
+
+    // Verificando se a data atual está dentro do intervalo especificado
+    if (dataInicial <= dataAtual && dataAtual <= dataFinal) {
+      var tempoTotal = dataFinal.getTime() - dataInicial.getTime();
+      var tempoPassado = dataAtual.getTime() - dataInicial.getTime();
+
+      // Calculando a porcentagem de tempo passado
+      var porcentagemPassada = (tempoPassado / tempoTotal) * 100;
+
+      // Calculando a quantidade de dias passados
+      var diasPassados = Math.floor(tempoPassado / (1000 * 60 * 60 * 24));
+
+      // Calculando a quantidade de dias restantes
+      var diasRestantes = Math.floor((dataFinal.getTime() - dataAtual.getTime()) / (1000 * 60 * 60 * 24));
+
+      document.getElementById('percentage').textContent = "Porcentagem de tempo passado entre " + dataInicial.toLocaleDateString() + " e " + dataFinal.toLocaleDateString() + " até hoje é: " + porcentagemPassada.toFixed(2) + "%";
+      
+      document.getElementById('days').textContent = "Dias passados desde " + dataInicial.toLocaleDateString() + ": " + diasPassados + " dias";
+
+      document.getElementById('remainingDays').textContent = "Dias restantes até " + dataFinal.toLocaleDateString() + ": " + diasRestantes + " dias";
+
+      document.getElementById('progress').style.width = porcentagemPassada + "%";
+    } else {
+      document.getElementById('percentage').textContent = "A data atual está fora do intervalo especificado.";
+    }
+  </script>
+</body>
+</html>
