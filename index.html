@@ -17,12 +17,22 @@
       background-color: #f0f0f0;
       border-radius: 5px;
       overflow: hidden;
+      position: relative;
     }
 
     .progress {
       width: 0%;
       height: 100%;
       background-color: #3498db;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .progress-text {
+      line-height: 30px;
+      color: black;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -30,42 +40,61 @@
   <h1>Porcentagem de Tempo Passado</h1>
   <p id="percentage"></p>
   <p id="days"></p>
-  <p id="remainingDays"></p>
+  <p id="countdown"></p>
   
   <div class="progress-bar">
     <div class="progress" id="progress"></div>
+    <div class="progress-text" id="progressText"></div>
   </div>
 
   <script>
-    // Definindo as datas
-    var dataInicial = new Date('2023-12-21');
-    var dataFinal = new Date('2024-03-02'); // Alterada para 2 de março de 2024
-    var dataAtual = new Date();
+    function updateCountdown() {
+      // Definindo as datas
+      var dataInicial = new Date('2023-12-21');
+      var dataFinal = new Date('2024-03-05'); // Alterada para 2 de março de 2024
+      var dataAtual = new Date();
 
-    // Verificando se a data atual está dentro do intervalo especificado
-    if (dataInicial <= dataAtual && dataAtual <= dataFinal) {
-      var tempoTotal = dataFinal.getTime() - dataInicial.getTime();
-      var tempoPassado = dataAtual.getTime() - dataInicial.getTime();
+      // Verificando se a data atual está dentro do intervalo especificado
+      if (dataInicial <= dataAtual && dataAtual <= dataFinal) {
+        var tempoTotal = dataFinal.getTime() - dataInicial.getTime();
+        var tempoPassado = dataAtual.getTime() - dataInicial.getTime();
 
-      // Calculando a porcentagem de tempo passado
-      var porcentagemPassada = (tempoPassado / tempoTotal) * 100;
+        // Calculando a porcentagem de tempo passado
+        var porcentagemPassada = (tempoPassado / tempoTotal) * 100;
 
-      // Calculando a quantidade de dias passados
-      var diasPassados = Math.floor(tempoPassado / (1000 * 60 * 60 * 24));
+        // Calculando a quantidade de dias passados
+        var diasPassados = Math.floor(tempoPassado / (1000 * 60 * 60 * 24));
 
-      // Calculando a quantidade de dias restantes
-      var diasRestantes = Math.floor((dataFinal.getTime() - dataAtual.getTime()) / (1000 * 60 * 60 * 24));
+        document.getElementById('percentage').textContent = "Porcentagem de tempo passado entre " + dataInicial.toLocaleDateString() + " e " + dataFinal.toLocaleDateString() + " até hoje é: " + porcentagemPassada.toFixed(6) + "%";
+        
+        document.getElementById('days').textContent = "Dias passados desde " + dataInicial.toLocaleDateString() + ": " + diasPassados + " dias";
 
-      document.getElementById('percentage').textContent = "Porcentagem de tempo passado entre " + dataInicial.toLocaleDateString() + " e " + dataFinal.toLocaleDateString() + " até hoje é: " + porcentagemPassada.toFixed(2) + "%";
-      
-      document.getElementById('days').textContent = "Dias passados desde " + dataInicial.toLocaleDateString() + ": " + diasPassados + " dias";
+        document.getElementById('progress').style.width = porcentagemPassada + "%";
+        document.getElementById('progressText').textContent = porcentagemPassada.toFixed(6) + "%"; // Exibe a porcentagem na barra de progresso
 
-      document.getElementById('remainingDays').textContent = "Dias restantes até " + dataFinal.toLocaleDateString() + ": " + diasRestantes + " dias";
+        // Adicionando contagem regressiva
+        var tempoRestante = dataFinal.getTime() - dataAtual.getTime();
+        var segundosRestantes = Math.floor(tempoRestante / 1000);
+        var diasRestantesCountdown = Math.floor(segundosRestantes / (3600 * 24));
+        segundosRestantes %= 3600 * 24;
+        var horasRestantes = Math.floor(segundosRestantes / 3600);
+        segundosRestantes %= 3600;
+        var minutosRestantes = Math.floor(segundosRestantes / 60);
+        var segundos = segundosRestantes % 60;
 
-      document.getElementById('progress').style.width = porcentagemPassada + "%";
-    } else {
-      document.getElementById('percentage').textContent = "A data atual está fora do intervalo especificado.";
+        var countdownText = "Contagem regressiva: " + diasRestantesCountdown + " dias, " + horasRestantes + " horas, " + minutosRestantes + " minutos, " + segundos + " segundos";
+
+        document.getElementById('countdown').textContent = countdownText;
+
+      } else {
+        document.getElementById('percentage').textContent = "A data atual está fora do intervalo especificado.";
+      }
     }
+
+    // Atualizar a contagem regressiva a cada segundo
+    updateCountdown(); // Chama a função imediatamente para mostrar a contagem inicial
+    setInterval(updateCountdown, 1000); // Atualiza a contagem a cada segundo
+
   </script>
 </body>
 </html>
