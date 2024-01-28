@@ -33,6 +33,10 @@
       line-height: 30px;
       color: black;
       font-weight: bold;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
     }
   </style>
 </head>
@@ -50,8 +54,8 @@
   <script>
     function updateCountdown() {
       // Definindo as datas
-      var dataInicial = new Date('2023-12-21');
-      var dataFinal = new Date('2024-03-05'); // Alterada para 2 de março de 2024
+      var dataInicial = new Date('2023-12-21T00:00:00-03:00');
+      var dataFinal = new Date('2024-03-05T00:00:00-03:00'); // Alterada para 5 de março de 2024
       var dataAtual = new Date();
 
       // Verificando se a data atual está dentro do intervalo especificado
@@ -65,9 +69,9 @@
         // Calculando a quantidade de dias passados
         var diasPassados = Math.floor(tempoPassado / (1000 * 60 * 60 * 24));
 
-        document.getElementById('percentage').textContent = "Porcentagem de tempo passado entre " + dataInicial.toLocaleDateString() + " e " + dataFinal.toLocaleDateString() + " até hoje é: " + porcentagemPassada.toFixed(6) + "%";
+        document.getElementById('percentage').textContent = "Porcentagem de tempo passado entre " + dataInicial.toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}) + " e " + dataFinal.toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}) + " até hoje é: " + porcentagemPassada.toFixed(6) + "%";
         
-        document.getElementById('days').textContent = "Dias passados desde " + dataInicial.toLocaleDateString() + ": " + diasPassados + " dias";
+        document.getElementById('days').textContent = "Dias passados desde " + dataInicial.toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}) + ": " + diasPassados + " dias";
 
         document.getElementById('progress').style.width = porcentagemPassada + "%";
         document.getElementById('progressText').textContent = porcentagemPassada.toFixed(6) + "%"; // Exibe a porcentagem na barra de progresso
